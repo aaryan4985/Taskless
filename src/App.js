@@ -1,23 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react"; // This lets us use React features
+import "./App.css"; // Optional: if you add custom styles
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6">
+        <h1 className="text-2xl font-bold mb-4 text-center">Taskless 📝</h1>
+
+        {/* Task Input */}
+        <input
+          type="text"
+          placeholder="Enter a task..."
+          className="w-full border border-gray-300 p-2 rounded mb-4"
+        />
+      </div>
     </div>
   );
 }
