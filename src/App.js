@@ -64,6 +64,12 @@ function App() {
                   {task.text}
                 </span>
               </div>
+              <button
+                onClick={() => setTasks(tasks.filter((t) => t.id !== task.id))}
+                className="text-red-600 hover:text-red-800 text-sm"
+              >
+                ❌
+              </button>
             </li>
           ))}
         </ul>
