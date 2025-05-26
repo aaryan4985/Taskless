@@ -46,7 +46,24 @@ function App() {
               key={task.id}
               className="bg-gray-100 border p-2 rounded flex justify-between items-center"
             >
-              <span>{task.text}</span>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={task.completed}
+                  onChange={() =>
+                    setTasks(
+                      tasks.map((t) =>
+                        t.id === task.id ? { ...t, completed: !t.completed } : t
+                      )
+                    )
+                  }
+                />
+                <span
+                  className={task.completed ? "line-through text-gray-500" : ""}
+                >
+                  {task.text}
+                </span>
+              </div>
             </li>
           ))}
         </ul>
