@@ -1,22 +1,42 @@
-import React, { useState } from "react";
+// src/App.js
+import React, { useState, useEffect } from "react";
 
 function App() {
   const [taskText, setTaskText] = useState("");
-
   const [tasks, setTasks] = useState([]);
 
-  const addTask = () => {
-    if (taskText.trim() === "") return;
+  // Load from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("taskless-tasks");
+    if (saved) {
+      setTasks(JSON.parse(saved));
+    }
+  }, []);
 
+  // Save to localStorage
+  useEffect(() => {
+    localStorage.setItem("taskless-tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  const addTask = () => {
+    if (!taskText.trim()) return;
     const newTask = {
       id: Date.now(),
       text: taskText,
       completed: false,
     };
-
     setTasks([...tasks, newTask]);
-
     setTaskText("");
+  };
+
+  const toggleComplete = (id) => {
+    setTasks(
+      tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
+    );
+  };
+
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((t) => t.id !== id));
   };
 
   return (
@@ -27,10 +47,10 @@ function App() {
         <div className="flex gap-2">
           <input
             type="text"
-            value={taskText} // controlled input
-            onChange={(e) => setTaskText(e.target.value)} // updates state
+            value={taskText}
+            onChange={(e) => setTaskText(e.target.value)}
             placeholder="Enter a task..."
-            className="flex-1 border border-gray-300 p-2 rounded"
+            className="flex-1 border p-2 rounded"
           />
           <button
             onClick={addTask}
@@ -50,13 +70,7 @@ function App() {
                 <input
                   type="checkbox"
                   checked={task.completed}
-                  onChange={() =>
-                    setTasks(
-                      tasks.map((t) =>
-                        t.id === task.id ? { ...t, completed: !t.completed } : t
-                      )
-                    )
-                  }
+                  onChange={() => toggleComplete(task.id)}
                 />
                 <span
                   className={task.completed ? "line-through text-gray-500" : ""}
@@ -65,8 +79,8 @@ function App() {
                 </span>
               </div>
               <button
-                onClick={() => setTasks(tasks.filter((t) => t.id !== task.id))}
-                className="text-red-600 hover:text-red-800 text-sm"
+                onClick={() => deleteTask(task.id)}
+                className="text-red-500 hover:text-red-700 text-sm"
               >
                 ❌
               </button>
